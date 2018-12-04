@@ -1,42 +1,42 @@
 # esx_vehicleshop
 
-## Requirements
+## 要求
 
-* Auto mode (everyone can buy vehicles from the dealer)
-  * No need to download another resource
+* 全自动模式（每个人都可以从经销商那里购买车辆）
+  * 无需下载其他资源
 
-* Player management (the car dealer job): billing, boss actions and more!
-  * [esx_society](https://github.com/ESX-Org/esx_society)
-  * [esx_billing](https://github.com/ESX-Org/esx_billing)
-  * [esx_addonaccount](https://github.com/ESX-Org/esx_addonaccount)
-  * [esx_addoninventory](https://github.com/ESX-Org/esx_addoninventory)
-  * [cron](https://github.com/ESX-Org/cron)
+* 玩家管理模式 (汽车经销商的工作): 账单, Boss操作等等！
+  * [esx_society](https://github.com/ESX-CN/esx_society)
+  * [esx_billing](https://github.com/ESX-CN/esx_billing)
+  * [esx_addonaccount](https://github.com/ESX-CN/esx_addonaccount)
+  * [esx_addoninventory](https://github.com/ESX-CN/esx_addoninventory)
+  * [cron](https://github.com/ESX-CN/cron)
 
-## Download & Installation
+## 下载 & 安装
 
-### Using [fvm](https://github.com/qlaffont/fvm-installer)
+### 使用 [fvm](https://github.com/qlaffont/fvm-installer)
 ```
-fvm install --save --folder=esx esx-org/esx_vehicleshop
+fvm install --save --folder=esx esx-cn/esx_vehicleshop
 ```
 
-### Using Git
+### 使用 Git
 ```
 cd resources
-git clone https://github.com/ESX-Org/esx_vehicleshop [esx]/esx_vehicleshop
+git clone https://github.com/ESX-CN/esx_vehicleshop [esx]/esx_vehicleshop
 ```
 
-### Manually
-- Download https://github.com/ESX-Org/esx_vehicleshop/archive/master.zip
-- Put it in the `[esx]` directory
+### 手动下载
+- 下载 https://github.com/ESX-CN/esx_vehicleshop/archive/master.zip
+- 解压至 `[esx]` 目录
 
-## Installation
-- Import `esx_vehicleshop.sql` in your database
-- Add this in your `server.cfg`:
+## 安装
+- 导入 `esx_vehicleshop.sql` 至你的数据库
+- 在你的服务器配置文件 `server.cfg`中加入
 
 ```
 start esx_vehicleshop
 ```
-- If you want player management you have to set `Config.EnablePlayerManagement` to `true` in `config.lua`
+- 如果你想要玩家管理工作，你需要在 `config.lua` 中配置 `Config.EnablePlayerManagement` 为 `true`
 
 # Legal
 ### License
