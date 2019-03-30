@@ -280,7 +280,7 @@ AddEventHandler('esx_vehicleshop:returnProvider', function(vehicleModel)
 
 		if result[1] then
 			local id    = result[1].id
-			local price = ESX.Round(result[1].price * 0.75)
+			local price = ESX.Math.Round(result[1].price * 0.75)
 
 			TriggerEvent('esx_addonaccount:getSharedAccount', 'society_cardealer', function(account)
 				account.addMoney(price)
@@ -342,14 +342,19 @@ ESX.RegisterServerCallback('esx_vehicleshop:giveBackVehicle', function (source, 
 end)
 
 ESX.RegisterServerCallback('esx_vehicleshop:resellVehicle', function (source, cb, plate, model)
-	local resellPrice
+	local resellPrice = 0
 
 	-- calculate the resell price
 	for i=1, #Vehicles, 1 do
-		if Vehicles[i].model == model then
+		if GetHashKey(Vehicles[i].model) == model then
 			resellPrice = ESX.Math.Round(Vehicles[i].price / 100 * Config.ResellPercentage)
 			break
 		end
+	end
+
+	if resellPrice == 0 then
+		print(('esx_vehicleshop: %s attempted to sell an unknown vehicle!'):format(GetPlayerIdentifiers(source)[1]))
+		cb(false)
 	end
 
 	MySQL.Async.fetchAll('SELECT * FROM rented_vehicles WHERE plate = @plate', {
@@ -369,10 +374,11 @@ ESX.RegisterServerCallback('esx_vehicleshop:resellVehicle', function (source, cb
 
 					local vehicle = json.decode(result[1].vehicle)
 
-					if vehicle.model == GetHashKey(model) then
+					if vehicle.model == model then
 						if vehicle.plate == plate then
 							xPlayer.addMoney(resellPrice)
 							RemoveOwnedVehicle(plate)
+
 							cb(true)
 						else
 							print(('esx_vehicleshop: %s attempted to sell an vehicle with plate mismatch!'):format(xPlayer.identifier))
@@ -395,10 +401,11 @@ ESX.RegisterServerCallback('esx_vehicleshop:resellVehicle', function (source, cb
 
 								local vehicle = json.decode(result[1].vehicle)
 
-								if vehicle.model == GetHashKey(model) then
+								if vehicle.model == model then
 									if vehicle.plate == plate then
 										xPlayer.addMoney(resellPrice)
 										RemoveOwnedVehicle(plate)
+
 										cb(true)
 									else
 										print(('esx_vehicleshop: %s attempted to sell an vehicle with plate mismatch!'):format(xPlayer.identifier))
@@ -439,10 +446,37 @@ ESX.RegisterServerCallback('esx_vehicleshop:getPlayerInventory', function (sourc
 end)
 
 ESX.RegisterServerCallback('esx_vehicleshop:isPlateTaken', function (source, cb, plate)
-	MySQL.Async.fetchAll('SELECT * FROM owned_vehicles WHERE @plate = plate', {
+	MySQL.Async.fetchAll('SELECT * FROM owned_vehicles WHERE plate = @plate', {
 		['@plate'] = plate
 	}, function (result)
 		cb(result[1] ~= nil)
+	end)
+end)
+
+ESX.RegisterServerCallback('esx_vehicleshop:retrieveJobVehicles', function (source, cb, type)
+	local xPlayer = ESX.GetPlayerFromId(source)
+
+	MySQL.Async.fetchAll('SELECT * FROM owned_vehicles WHERE owner = @owner AND type = @type AND job = @job', {
+		['@owner'] = xPlayer.identifier,
+		['@type'] = type,
+		['@job'] = xPlayer.job.name
+	}, function (result)
+		cb(result)
+	end)
+end)
+
+RegisterServerEvent('esx_vehicleshop:setJobVehicleState')
+AddEventHandler('esx_vehicleshop:setJobVehicleState', function(plate, state)
+	local xPlayer = ESX.GetPlayerFromId(source)
+
+	MySQL.Async.execute('UPDATE owned_vehicles SET `stored` = @stored WHERE plate = @plate AND job = @job', {
+		['@stored'] = state,
+		['@plate'] = plate,
+		['@job'] = xPlayer.job.name
+	}, function(rowsChanged)
+		if rowsChanged == 0 then
+			print(('esx_vehicleshop: %s exploited the garage!'):format(xPlayer.identifier))
+		end
 	end)
 end)
 
