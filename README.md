@@ -1,5 +1,29 @@
 # esx_vehicleshop
 
+## 注意
+本版本为实现语言自适应修改了其他插件部分代码，分别为`esx_society`和`esx_phone`;
+
+### esx_phone 
+在`server/main.lua`
+```
+AddEventHandler('esx_phone:registerNumber', function(number, type, sharePos, hasDispatch, hideNumber, hidePosIfAnon)
+```
+前一行添加
+```
+RegisterServerEvent('esx_phone:registerNumber')
+```
+### esx_society 
+
+在`server/main.lua`
+```
+AddEventHandler('esx_society:registerSociety', function(name, label, account, datastore, inventory, data)
+```
+前一行添加
+```
+RegisterServerEvent('esx_society:registerSociety')
+```
+
+
 ## 要求
 
 * 全自动模式（每个人都可以从经销商那里购买车辆）

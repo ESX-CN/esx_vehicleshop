@@ -6,7 +6,7 @@ Config.EnableOwnedVehicles        = true
 Config.EnableSocietyOwnedVehicles = false -- use with EnablePlayerManagement disabled, or else it wont have any effects
 Config.ResellPercentage           = 50
 
-Config.Locale                     = 'fr'
+Config.Locale                     = 'en'
 
 Config.LicenseEnable = false -- require people to own drivers license when buying vehicles? Only applies if EnablePlayerManagement is disabled. Requires esx_license
 
