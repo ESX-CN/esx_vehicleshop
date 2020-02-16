@@ -62,11 +62,13 @@ start esx_vehicleshop
 ```
 - 如果你想要玩家管理工作，你需要在 `config.lua` 中配置 `Config.EnablePlayerManagement` 为 `true`
 
-# Legal
+## Legal
+
 ### License
+
 esx_vehicleshop - vehicle shop for ESX
 
-Copyright (C) 2015-2018 Jérémie N'gadi
+Copyright (C) 2015-2020 Jérémie N'gadi
 
 This program Is free software: you can redistribute it And/Or modify it under the terms Of the GNU General Public License As published by the Free Software Foundation, either version 3 Of the License, Or (at your option) any later version.
 
