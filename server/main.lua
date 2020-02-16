@@ -78,8 +78,8 @@ AddEventHandler('esx_vehicleshop:setVehicleOwnedPlayerId', function(playerId, ve
 							['@vehicle'] = json.encode(vehicleProps)
 						}, function(rowsChanged)
 
-							TriggerClientEvent('esx:showVehicleshopNotification', source, 'vehicle_set_owned', vehicleProps.plate, xTarget.getName())
-							TriggerClientEvent('esx:showVehicleshopNotification', playerId, 'vehicle_belongs', vehicleProps.plate)
+							TriggerClientEvent('esx:showVehicleshopNotification', xPlayer.source, 'vehicle_set_owned', vehicleProps.plate, xTarget.getName())
+							TriggerClientEvent('esx:showVehicleshopNotification', xTarget.source, 'vehicle_belongs', vehicleProps.plate)
 						end)
 
 						local dateNow = os.date('%Y-%m-%d %H:%M')
@@ -127,7 +127,7 @@ AddEventHandler('esx_vehicleshop:rentVehicle', function(vehicle, plate, rentPric
 							['@rent_price']  = rentPrice,
 							['@owner']       = xTarget.identifier
 						}, function(rowsChanged2)
-							TriggerClientEvent('esx:showVehicleshopNotification', source, 'vehicle_set_rented', plate, xTarget.getName())
+							TriggerClientEvent('esx:showVehicleshopNotification', xPlayer.source, 'vehicle_set_rented', plate, xTarget.getName())
 						end)
 					end
 				end)
@@ -151,12 +151,12 @@ AddEventHandler('esx_vehicleshop:getStockItem', function(itemName, count)
 			if xPlayer.canCarryItem(itemName, count) then
 				inventory.removeItem(itemName, count)
 				xPlayer.addInventoryItem(itemName, count)
-				TriggerClientEvent('esx:showVehicleshopNotification', _source, 'have_withdrawn', count, item.label)
+				TriggerClientEvent('esx:showVehicleshopNotification', xPlayer.source, 'have_withdrawn', count, item.label)
 			else
-				TriggerClientEvent('esx:showVehicleshopNotification', _source, 'player_cannot_hold')
+				TriggerClientEvent('esx:showVehicleshopNotification', xPlayer.source, 'player_cannot_hold')
 			end
 		else
-			TriggerClientEvent('esx:showVehicleshopNotification', _source, 'not_enough_in_society')
+			TriggerClientEvent('esx:showVehicleshopNotification', xPlayer.source, 'not_enough_in_society')
 		end
 	end)
 end)
@@ -172,9 +172,9 @@ AddEventHandler('esx_vehicleshop:putStockItems', function(itemName, count)
 		if item.count >= 0 then
 			xPlayer.removeInventoryItem(itemName, count)
 			inventory.addItem(itemName, count)
-			TriggerClientEvent('esx:showVehicleshopNotification', _source, 'have_deposited', count, item.label)
+			TriggerClientEvent('esx:showVehicleshopNotification', xPlayer.source, 'have_deposited', count, item.label)
 		else
-			TriggerClientEvent('esx:showVehicleshopNotification', _source, 'invalid_amount')
+			TriggerClientEvent('esx:showVehicleshopNotification', xPlayer.source, 'invalid_amount')
 		end
 	end)
 end)
@@ -207,7 +207,7 @@ ESX.RegisterServerCallback('esx_vehicleshop:buyVehicle', function(source, cb, mo
 			['@vehicle'] = json.encode({model = GetHashKey(model), plate = plate})
 		}, function(rowsChanged)
 
-			TriggerClientEvent('esx:showVehicleshopNotification', source, 'vehicle_belongs', plate)
+			TriggerClientEvent('esx:showVehicleshopNotification', xPlayer.source, 'vehicle_belongs', plate)
 			cb(true)
 		end)
 	else
@@ -273,7 +273,7 @@ AddEventHandler('esx_vehicleshop:returnProvider', function(vehicleModel)
 							local vehicleLabel = getVehicleLabelFromModel(vehicleModel)
 
 							account.addMoney(price)
-							TriggerClientEvent('esx:showVehicleshopNotification', source, 'vehicle_sold_for', vehicleLabel, ESX.Math.GroupDigits(price))
+							TriggerClientEvent('esx:showVehicleshopNotification', xPlayer.source, 'vehicle_sold_for', vehicleLabel, ESX.Math.GroupDigits(price))
 						end)
 					end
 				end)
