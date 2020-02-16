@@ -77,8 +77,9 @@ AddEventHandler('esx_vehicleshop:setVehicleOwnedPlayerId', function(playerId, ve
 							['@plate']   = vehicleProps.plate,
 							['@vehicle'] = json.encode(vehicleProps)
 						}, function(rowsChanged)
-							xPlayer.showNotification(_U('vehicle_set_owned', vehicleProps.plate, xTarget.getName()))
-							xTarget.showNotification(_U('vehicle_belongs', vehicleProps.plate))
+
+							TriggerClientEvent('esx:showVehicleshopNotification', source, 'vehicle_set_owned', vehicleProps.plate, xTarget.getName())
+							TriggerClientEvent('esx:showVehicleshopNotification', playerId, 'vehicle_belongs', vehicleProps.plate)
 						end)
 
 						local dateNow = os.date('%Y-%m-%d %H:%M')
@@ -126,7 +127,7 @@ AddEventHandler('esx_vehicleshop:rentVehicle', function(vehicle, plate, rentPric
 							['@rent_price']  = rentPrice,
 							['@owner']       = xTarget.identifier
 						}, function(rowsChanged2)
-							xPlayer.showNotification(_U('vehicle_set_rented', plate, xTarget.getName()))
+							TriggerClientEvent('esx:showVehicleshopNotification', source, 'vehicle_set_rented', plate, xTarget.getName())
 						end)
 					end
 				end)
@@ -205,7 +206,8 @@ ESX.RegisterServerCallback('esx_vehicleshop:buyVehicle', function(source, cb, mo
 			['@plate']   = plate,
 			['@vehicle'] = json.encode({model = GetHashKey(model), plate = plate})
 		}, function(rowsChanged)
-			xPlayer.showNotification(_U('vehicle_belongs', plate))
+
+			TriggerClientEvent('esx:showVehicleshopNotification', source, 'vehicle_belongs', plate)
 			cb(true)
 		end)
 	else
@@ -271,7 +273,7 @@ AddEventHandler('esx_vehicleshop:returnProvider', function(vehicleModel)
 							local vehicleLabel = getVehicleLabelFromModel(vehicleModel)
 
 							account.addMoney(price)
-							xPlayer.showNotification(_U('vehicle_sold_for', vehicleLabel, ESX.Math.GroupDigits(price)))
+							TriggerClientEvent('esx:showVehicleshopNotification', source, 'vehicle_sold_for', vehicleLabel, ESX.Math.GroupDigits(price))
 						end)
 					end
 				end)
