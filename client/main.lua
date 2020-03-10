@@ -208,7 +208,7 @@ function OpenShopMenu()
 			table.insert(options, ('%s <span style="color:green;">%s</span>'):format(vehicle.name, _U('generic_shopitem', ESX.Math.GroupDigits(vehicle.price))))
 		end
 
-		table.sort(options)
+		-- table.sort(options)
 
 		table.insert(elements, {
 			name    = category.name,
