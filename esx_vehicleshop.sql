@@ -1,4 +1,4 @@
-USE `essentialmode`;
+USE `es_extended`;
 
 INSERT INTO `addon_account` (name, label, label_sc, label_tc, shared) VALUES
 	('society_cardealer','Cardealer','汽车经销商','載具經銷商',1)
